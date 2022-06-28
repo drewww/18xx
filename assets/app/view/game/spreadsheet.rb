@@ -99,13 +99,16 @@ module View
         last_values = nil
         @game.players.first.history.map do |h|
           values = @game.players.map do |p|
-            p.history.find { |h2| h2.round == h.round }.value
+            p.history.find { |h2| h2.round == h.round }.player_value_detail
           end
 
-          delta_v = (last_values || Array.new(values.size, 0)).map(&:-@).zip(values).map(&:sum) if @delta_value
+          # just hiding delta_v for now, that will be be more complex and come later
+          # delta_v = (last_values || Array.new(values.size, 0)).map(&:-@).zip(values).map(&:sum) if @delta_value
+          delta_v = Array.new(values.size, 0)
+
           last_values = values
           row_content = values.map.with_index do |v, i|
-            disp_value = @delta_value ? delta_v[i] : v
+            disp_value = @delta_value ? delta_v[i] : v[:cash]
             h('td.padded_number',
               disp_value.negative? ? { style: { color: 'red' } } : {},
               @game.format_currency(disp_value))

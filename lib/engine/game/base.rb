@@ -770,7 +770,7 @@ module Engine
         return unless @round.show_in_history?
 
         @players.each do |p|
-          p.history << PlayerInfo.new(@round.class.short_name, turn, @round.round_num, player_value(p))
+          p.history << PlayerInfo.new(@round.class.short_name, turn, @round.round_num, player_value(p), player_value_detailed(p))
         end
       end
 
@@ -930,6 +930,13 @@ module Engine
 
       def player_value(player)
         player.value
+      end
+
+      # I don't understand why this isn't a method on player, but okay. 
+      def player_value_detailed(player)
+        # start with just breaking out cash and share value
+        # later versions will break it out by company symbol
+        player.detailed_value
       end
 
       def liquidity(player, emergency: false)

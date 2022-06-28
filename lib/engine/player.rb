@@ -28,6 +28,10 @@ module Engine
       @cash + shares.select { |s| s.corporation.ipoed }.sum(&:price) + @companies.sum(&:value)
     end
 
+    def detailed_value
+      {:cash=>player.cash, :shares=> shares.select { |s| s.corporation.ipoed }.sum(&:price) + @companies.sum(&:value)}
+    end
+
     def owner
       self
     end
