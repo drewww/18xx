@@ -108,10 +108,12 @@ module View
 
           last_values = values
           row_content = values.map.with_index do |v, i|
-            disp_value = @delta_value ? delta_v[i] : v[:cash]
+            # disp_value = @delta_value ? delta_v[i] : v[:cash]
+            disp_string = @game.format_currency(v[:cash]) + " " + @game.format_currency(v[:shares])
             h('td.padded_number',
-              disp_value.negative? ? { style: { color: 'red' } } : {},
-              @game.format_currency(disp_value))
+              # disp_value.negative? ? { style: { color: 'red' } } : {},
+              {},
+              disp_string)
           end
 
           h(:tr, tr_default_props, [
