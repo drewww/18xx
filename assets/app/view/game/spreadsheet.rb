@@ -112,12 +112,12 @@ module View
             # disp_value = @delta_value ? delta_v[i] : v[:cash]
             # disp_value.negative? ? { style: { color: 'red' } } : {},
 
-            disp_string = @game.format_currency(v[:cash]) + " " + @game.format_currency(v[:shares])
-            h('td.padded_number', {}, [
-              h(:div, { style: {position: 'relative' } }, [
-                h('span', {}, disp_string),
-                h('div.bar.cash', {}, ''),
-                h('div.bar.stock', {}, '')
+            disp_string = @game.format_currency(v[:cash] + v[:shares])
+            h('td.padded_number', { style: { isolation: 'isolate' } }, [
+              h(:div, { style: { position: 'relative', height: '1.5em', overflow: 'visible' } }, [
+                h('div.bar.cash', { style: {position: 'absolute', height: '100%', left: '0%', backgroundColor: '#ecffe6', width: '50%', zIndex: '-1' } }, ''),
+                h('div.bar.stock', { style: {position: 'absolute', height: '100%', left: '50%', backgroundColor: '#e6e9ff', width: '50%', zIndex: '-1' } }, ''),
+                h('span', { style: { float: 'left', zIndex: '3' } }, disp_string)
               ])
             ])
           end
