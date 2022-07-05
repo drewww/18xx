@@ -108,12 +108,18 @@ module View
 
           last_values = values
           row_content = values.map.with_index do |v, i|
+            # TODO add coloring back in with the right delta values
             # disp_value = @delta_value ? delta_v[i] : v[:cash]
+            # disp_value.negative? ? { style: { color: 'red' } } : {},
+
             disp_string = @game.format_currency(v[:cash]) + " " + @game.format_currency(v[:shares])
-            h('td.padded_number',
-              # disp_value.negative? ? { style: { color: 'red' } } : {},
-              {},
-              disp_string)
+            h('td.padded_number', {}, [
+              h(:div, { style: {position: 'relative' } }, [
+                h('span', {}, disp_string),
+                h('div.bar.cash', {}, ''),
+                h('div.bar.stock', {}, '')
+              ])
+            ])
           end
 
           h(:tr, tr_default_props, [
