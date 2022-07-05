@@ -142,10 +142,10 @@ svg {
 #spreadsheet > div:not(#extra_cards) tbody > tr:nth-child(2n) {
   background-image: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.4));
 }
-#spreadsheet > div:not(#extra_cards) tbody > tr:hover {
+/*#spreadsheet > div:not(#extra_cards) tbody > tr:hover {
   filter: drop-shadow(1px 0px 2px #555);
 }
-
+*/
 @media (prefers-color-scheme: dark) {
   body {
     background-color: black;
