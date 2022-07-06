@@ -112,6 +112,8 @@ module View
           h(Game::GameInfo, game: @game)
         when 'spreadsheet'
           h(Game::Spreadsheet, game: @game)
+        when 'analysis'
+          h(Game::Analysis, game: @game)
         when 'tools'
           h(Game::Tools, game: @game, game_data: @game_data, user: @user)
         when 'auto'
@@ -251,6 +253,8 @@ module View
           change_anchor('#spreadsheet')
         when 'o'
           change_anchor('#tools')
+        when 'y'
+          change_anchor('#analyze')
         when 'a'
           change_anchor('#auto')
         when 'c'
@@ -327,6 +331,7 @@ module View
       menu_items << item('I|nfo', '#info')
       menu_items << item('T|iles', '#tiles') unless @game.layout == :none
       menu_items << item('S|preadsheet', '#spreadsheet')
+      menu_items << item('Analy|sis', '#analysis')
       menu_items << item("To|ols#{' 📝' if note}", '#tools')
 
       enabled = @game.programmed_actions[@game.player_by_id(@user['id'])] if @user

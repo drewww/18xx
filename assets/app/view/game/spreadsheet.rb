@@ -106,7 +106,7 @@ module View
         global_value_max = player_value_max.max()
 
         @game.players.first.history.map do |h|
-          
+
           # TODO collapse these two loops. 
           values_detail = @game.players.map do |p|
             p.history.find { |h2| h2.round == h.round }.player_value_detail
@@ -130,8 +130,8 @@ module View
 
             h('td.padded_number', { style: { isolation: 'isolate' } }, [
               h(:div, { style: { position: 'relative', height: '1.5em', overflow: 'visible' } }, [
-                h('div.bar.cash', { style: bar_style.merge( { backgroundColor: '#51bd40',left: '0%',  width: (v[:cash]*100/global_value_max).to_s+'%'})}, ''),
-                h('div.bar.stock', { style: bar_style.merge( { backgroundColor: '#4a5fff', left: (v[:cash]*100/global_value_max).to_s+'%', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' })}, ''),
+                h('div.bar.cash', { style: bar_style.merge( { backgroundColor: '#9199b5',left: '0%',  width: (v[:cash]*100/global_value_max).to_s+'%'})}, ''),
+                h('div.bar.stock', { style: bar_style.merge( { backgroundColor: '#a7b1d1', left: (v[:cash]*100/global_value_max).to_s+'%', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' })}, ''),
                 h('span', { style: { float: 'left', zIndex: '3', color: (disp_value.negative? and @delta_value) ? 'red' : 'inherit' } }, disp_string)
               ])
             ])
