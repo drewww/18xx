@@ -97,6 +97,15 @@ module View
       def render_player_or_history
         # OR history should exist in all
         last_values = nil
+
+        # get all value objects into one liist
+        player_value_max = @game.players.map do |p|
+          p.history.reduce(0) { |s, v| s > v.value ? s : v.value }
+        end
+
+        global_value_max = player_value_max.max()
+        puts global_value_max
+
         @game.players.first.history.map do |h|
           values = @game.players.map do |p|
             p.history.find { |h2| h2.round == h.round }.player_value_detail
@@ -113,10 +122,11 @@ module View
             # disp_value.negative? ? { style: { color: 'red' } } : {},
 
             disp_string = @game.format_currency(v[:cash] + v[:shares])
+
             h('td.padded_number', { style: { isolation: 'isolate' } }, [
               h(:div, { style: { position: 'relative', height: '1.5em', overflow: 'visible' } }, [
-                h('div.bar.cash', { style: {position: 'absolute', height: '100%', left: '0%', backgroundColor: '#ecffe6', width: '50%', zIndex: '-1' } }, ''),
-                h('div.bar.stock', { style: {position: 'absolute', height: '100%', left: '50%', backgroundColor: '#e6e9ff', width: '50%', zIndex: '-1' } }, ''),
+                h('div.bar.cash', { style: {position: 'absolute', height: '100%', left: '0%', backgroundColor: '#ecffe6', width: (v[:cash]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
+                h('div.bar.stock', { style: {position: 'absolute', height: '100%', left: (v[:cash]*100/global_value_max).to_s+'%', backgroundColor: '#e6e9ff', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
                 h('span', { style: { float: 'left', zIndex: '3' } }, disp_string)
               ])
             ])
