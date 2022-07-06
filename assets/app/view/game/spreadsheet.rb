@@ -125,8 +125,8 @@ module View
 
             h('td.padded_number', { style: { isolation: 'isolate' } }, [
               h(:div, { style: { position: 'relative', height: '1.5em', overflow: 'visible' } }, [
-                h('div.bar.cash', { style: {position: 'absolute', height: '100%', left: '0%', backgroundColor: '#ecffe6', width: (v[:cash]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
-                h('div.bar.stock', { style: {position: 'absolute', height: '100%', left: (v[:cash]*100/global_value_max).to_s+'%', backgroundColor: '#e6e9ff', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
+                h('div.bar.cash', { style: {position: 'absolute', opacity: '0.2', backgroundColor: '#51bd40', height: '100%', left: '0%',  width: (v[:cash]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
+                h('div.bar.stock', { style: {position: 'absolute', opacity: '0.2', backgroundColor: '#4a5fff', height: '100%', left: (v[:cash]*100/global_value_max).to_s+'%', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
                 h('span', { style: { float: 'left', zIndex: '3' } }, disp_string)
               ])
             ])
