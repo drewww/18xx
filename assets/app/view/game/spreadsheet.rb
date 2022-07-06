@@ -104,30 +104,35 @@ module View
         end
 
         global_value_max = player_value_max.max()
-        puts global_value_max
 
         @game.players.first.history.map do |h|
-          values = @game.players.map do |p|
+          
+          # TODO collapse these two loops. 
+          values_detail = @game.players.map do |p|
             p.history.find { |h2| h2.round == h.round }.player_value_detail
           end
 
+          values = @game.players.map do |p|
+            p.history.find { |h2| h2.round == h.round }.value
+          end
+
           # just hiding delta_v for now, that will be be more complex and come later
-          # delta_v = (last_values || Array.new(values.size, 0)).map(&:-@).zip(values).map(&:sum) if @delta_value
-          delta_v = Array.new(values.size, 0)
+          delta_v = (last_values || Array.new(values.size, 0)).map(&:-@).zip(values).map(&:sum) if @delta_value
 
           last_values = values
-          row_content = values.map.with_index do |v, i|
-            # TODO add coloring back in with the right delta values
-            # disp_value = @delta_value ? delta_v[i] : v[:cash]
-            # disp_value.negative? ? { style: { color: 'red' } } : {},
 
-            disp_string = @game.format_currency(v[:cash] + v[:shares])
+          row_content = values_detail.map.with_index do |v, i|
+            disp_value = @delta_value ? delta_v[i] : v[:cash]+v[:shares]
+
+            disp_string = @game.format_currency(disp_value)
+
+            bar_style = { position: 'absolute', opacity: '0.2', height: '100%' , zIindex: '-1' }
 
             h('td.padded_number', { style: { isolation: 'isolate' } }, [
               h(:div, { style: { position: 'relative', height: '1.5em', overflow: 'visible' } }, [
-                h('div.bar.cash', { style: {position: 'absolute', opacity: '0.2', backgroundColor: '#51bd40', height: '100%', left: '0%',  width: (v[:cash]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
-                h('div.bar.stock', { style: {position: 'absolute', opacity: '0.2', backgroundColor: '#4a5fff', height: '100%', left: (v[:cash]*100/global_value_max).to_s+'%', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' } }, ''),
-                h('span', { style: { float: 'left', zIndex: '3' } }, disp_string)
+                h('div.bar.cash', { style: bar_style.merge( { backgroundColor: '#51bd40',left: '0%',  width: (v[:cash]*100/global_value_max).to_s+'%'})}, ''),
+                h('div.bar.stock', { style: bar_style.merge( { backgroundColor: '#4a5fff', left: (v[:cash]*100/global_value_max).to_s+'%', width: (v[:shares]*100/global_value_max).to_s+'%', zIndex: '-1' })}, ''),
+                h('span', { style: { float: 'left', zIndex: '3', color: (disp_value.negative? and @delta_value) ? 'red' : 'inherit' } }, disp_string)
               ])
             ])
           end
